@@ -7,6 +7,24 @@ $accountQuery = mysqli_query($db, "SELECT * FROM accounts");
 $topEmployeeQuery = mysqli_query($db, "SELECT * FROM employees INNER JOIN accounts ON accounts.account_id = employees.account_id");
 $countTopEmployeeQuery = mysqli_num_rows($topEmployeeQuery);
 
+$navQuery = mysqli_query($db, "SELECT * FROM employees WHERE employee_id = '" . $_SESSION['employee_id'] . "'");
+$rowNav = mysqli_fetch_array($navQuery);
+
+// 1 Owner
+// 2 HR
+// 3 Employee
+
+$employee_type = $rowNav['type_id'];
+if ($employee_type == 1) {
+  header("Location: index.php");
+}
+if ($employee_type == 2) {
+  header("Location: attendance_hr.php");
+}
+if ($employee_type == 3) {
+  header("Location: attendance.php");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
