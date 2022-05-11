@@ -58,7 +58,7 @@ $avatar = $row['avatar'];
                             <div class="col-md-12">
                                 <ul class="nav nav-pills d-flex justify-content-center mb-3">
                                     <li class="nav-item">
-                                        <a class="nav-link active" href="account_information.php"><i class="bx bx-user me-1"></i> Account</a>
+                                        <a class="nav-link active" href="account_information.php">Account</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="deals.php"> Deals</a>

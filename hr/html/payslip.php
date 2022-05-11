@@ -37,7 +37,7 @@ $accountQuery = mysqli_query($db, "SELECT * FROM accounts");
 
                         <ul class="nav nav-pills d-flex justify-content-center mb-3">
                             <li class="nav-item">
-                                <a class="nav-link " href="account_information.php"><i class="bx bx-user me-1"></i> Account</a>
+                                <a class="nav-link " href="account_information.php">Account</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " href="deals.php"> Deals</a>
