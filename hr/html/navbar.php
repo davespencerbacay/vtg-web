@@ -8,7 +8,6 @@ $rowNav = mysqli_fetch_array($navQuery);
 
 $employee_type = $rowNav['type_id'];
 
-
 ?>
 
 <!-- Menu -->
@@ -89,7 +88,7 @@ $employee_type = $rowNav['type_id'];
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Employees</span></li>
             <!-- Forms -->
             <li class="menu-item <?php echo (basename($_SERVER['PHP_SELF']) == 'payroll.php' ? 'active' : " "); ?>">
-                <a href="#" class="menu-link">
+                <a href="payroll_employee.php" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-collection"></i>
                     <div data-i18n="Basic">Payroll</div>
                 </a>
