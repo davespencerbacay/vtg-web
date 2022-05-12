@@ -1,7 +1,18 @@
 <?php include 'db.php';
 session_start();
-$payrollQuery = mysqli_query($db, "SELECT * FROM payslip INNER JOIN employees ON payslip.employee_id = employees.employee_id");
+$payrollQuery = mysqli_query($db, "SELECT * FROM payslip WHERE payslip_id = '" . $_GET['id'] . "'");
+$row = mysqli_fetch_array($payrollQuery);
 $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
+
+if ($row['employee_type'] == "1") {
+    $employee_type = "Regular Employee";
+} else {
+    $employee_type = "Probitionary Employee";
+}
+
+$accountQuery = mysqli_query($db, "SELECT * FROM accounts WHERE account_id = '" . $row['account_id'] . "'");
+$accountRow = mysqli_fetch_array($accountQuery);
+$account_name = $accountRow['name'];
 
 ?>
 <!DOCTYPE html>
@@ -35,7 +46,7 @@ $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
 
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <!-- <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Accounts /</span> Basic Tables</h4> -->
-                        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">HR Payroll / Payslip - Chow Luna</span> </h4>
+                        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">HR Payroll / Payslip - <?php echo $row['firstname']; ?> <?php echo $row['lastname']; ?></span> </h4>
                         <!-- Hoverable Table rows -->
                         <div class="payslip-container">
 
@@ -44,67 +55,63 @@ $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
                                 <div id="scope">
                                     <div class="scope-entry">
                                         <div class="title">PAY RUN</div>
-                                        <div class="value">Mar 15, 2015</div>
+                                        <div class="value"><?php echo date("F d, Y", strtotime($row['pay_run'])); ?></div>
                                     </div>
                                     <div class="scope-entry">
                                         <div class="title">PAY PERIOD</div>
-                                        <div class="value">Mar 1 - Mar 15, 2015</div>
+                                        <div class="value"><?php echo date("F d, Y", strtotime($row['start_pay_period'])); ?> - <?php echo date("F d, Y", strtotime($row['start_pay_period'])); ?></div>
                                     </div>
                                 </div>
                                 <div class="content">
                                     <div class="left-panel">
                                         <div id="employee">
                                             <div id="name">
-                                                Piven El'Sync
+                                                VTG
                                             </div>
                                             <div id="email">
-                                                mary.ann+Regr06@salarium.com
+                                                vtg@gmail.com
                                             </div>
                                         </div>
                                         <div class="details">
                                             <div class="entry">
                                                 <div class="label">Employee ID</div>
-                                                <div class="value">Reg-006</div>
+                                                <div class="value"><?php echo $row['employee_id']; ?></div>
+                                            </div>
+                                            <div class="entry">
+                                                <div class="label">Employee ID</div>
+                                                <div class="value"><?php echo $row['firstname']; ?> <?php echo $row['lastname']; ?></div>
                                             </div>
                                             <div class="entry">
                                                 <div class="label">Hourly Rate</div>
-                                                <div class="value">₱1,023.68</div>
+                                                <div class="value">₱<?php echo $row['salary_per_hour']; ?></div>
                                             </div>
                                             <div class="entry">
                                                 <div class="label">Company Name</div>
                                                 <div class="value">VTG Support</div>
                                             </div>
                                             <div class="entry">
-                                                <div class="label">Date Hired</div>
-                                                <div class="value">Dec 1, 1862</div>
-                                            </div>
-                                            <div class="entry">
                                                 <div class="label">Position</div>
-                                                <div class="value">Web Developer</div>
+                                                <div class="value"><?php echo $employee_type; ?></div>
                                             </div>
                                             <div class="entry">
                                                 <div class="label">Account Name</div>
-                                                <div class="value">iQor</div>
-                                            </div>
-                                            <div class="entry">
-                                                <div class="label">Payroll Cycle</div>
-                                                <div class="value">Semi-Monthly</div>
+                                                <div class="value"><?php echo $account_name; ?></div>
                                             </div>
                                             <div class="entry">
                                                 <div class="label">TIN</div>
-                                                <div class="value">123-123-123-123</div>
+                                                <div class="value"><?php echo $row['tin']; ?></div>
                                             </div>
                                             <div class="entry">
                                                 <div class="label">SSS</div>
-                                                <div class="value">12-3123123-1</div>
+                                                <div class="value"><?php echo $row['sss']; ?></div>
                                             </div>
                                             <div class="entry">
                                                 <div class="label">HDMF</div>
-                                                <div class="value">1231-2312-3123</div>
+                                                <div class="value"><?php echo $row['pag_ibig']; ?></div>
                                             </div>
                                             <div class="entry">
                                                 <div class="label">Philhealth</div>
-                                                <div class="value">12-312312312-3</div>
+                                                <div class="value"><?php echo $row['philhealth']; ?></div>
                                             </div>
                                         </div>
                                         <div class="contributions">
@@ -168,7 +175,7 @@ $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
                                                 <div class="entry">
                                                     <div class="label">Basic Pay</div>
                                                     <div class="detail"></div>
-                                                    <div class="rate">₱45,000.00/Month</div>
+                                                    <div class="rate">₱<?php echo $row["salary_per_hour"] * 8 * 20; ?>/Month</div>
                                                     <div class="amount">₱45,000.00</div>
                                                 </div>
                                             </div>
@@ -327,7 +334,7 @@ $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
                                                     <div class="label">NET PAY</div>
                                                     <div class="detail"></div>
                                                     <div class="rate"></div>
-                                                    <div class="amount">69,656.21</div>
+                                                    <div class="amount">₱<?php echo $row["salary_per_hour"] * 8 * 20; ?>/Month</div>
                                                 </div>
                                             </div>
                                         </div>
