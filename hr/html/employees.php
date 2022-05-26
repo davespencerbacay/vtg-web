@@ -69,7 +69,7 @@ $employeeQuery = mysqli_query($db, "SELECT * FROM employees INNER JOIN accounts 
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             <a class="dropdown-item" href="employees-form.php?mode=edit&employee_id=<?php echo $row['employee_id']; ?>"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                            <a class="dropdown-item" href="javascript:void(0);" onclick="deleteDeal(<?php echo $row['id']; ?>)"><i class="bx bx-trash me-1"></i> Delete</a>
+                                                            <button class="dropdown-item" onclick="delete_employee(<?php echo $row['extension_number']; ?>)"><i class="bx bx-trash me-1"></i> Delete</button>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -99,7 +99,8 @@ $employeeQuery = mysqli_query($db, "SELECT * FROM employees INNER JOIN accounts 
     <?php include 'script-tags.php'; ?>
 
     <script>
-        function deleteDeal(id) {
+        function delete_employee(id) {
+            var employee_id = id;
             $.ajax({
                 url: "servers/employee-server.php",
                 method: "POST",
@@ -109,9 +110,10 @@ $employeeQuery = mysqli_query($db, "SELECT * FROM employees INNER JOIN accounts 
                 },
                 success: function(data) {
                     if (data === "Success") {
+                        alert("Employee Deleted");
                         window.location.replace("employees.php");
                     } else {
-                        swal("INVALID!", "Error", "error");
+                        swal("INVALID!", data, "error");
                     }
                 }
             })

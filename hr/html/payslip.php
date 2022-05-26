@@ -1,6 +1,7 @@
 <?php include 'db.php';
 session_start();
 $accountQuery = mysqli_query($db, "SELECT * FROM accounts");
+$payrollQuery = mysqli_query($db, "SELECT employees.*, payslip.pay_run, payslip.start_pay_period, payslip.end_pay_period, payslip.payslip_id, payslip.id FROM payslip INNER JOIN employees ON payslip.employee_id = employees.employee_id where employees.employee_id = '" . $_SESSION['employee_id'] . "'");
 ?>
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -48,35 +49,31 @@ $accountQuery = mysqli_query($db, "SELECT * FROM accounts");
                         </ul>
                         <!-- Hoverable Table rows -->
                         <div class="card">
-                            <div class="table-responsive text-nowrap">
+                            <div class="table-responsive text-nowrap" style="overflow: inherit !important;">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Date</th>
-                                            <th>Cutoff</th>
-                                            <th>Work Days</th>
-                                            <th>Absents</th>
-                                            <th>Total Hours</th>
-                                            <th>Actions</th>
+                                            <th>Extension Number</th>
+                                            <th>Account</th>
+                                            <th>Pay Run</th>
+                                            <th>Pay Period</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table-border-bottom-0">
-                                        <?php while ($row = mysqli_fetch_array($accountQuery)) {
-                                            $employeeQuery = mysqli_query($db, "SELECT * FROM employees WHERE account_id = '" . $row['account_id'] . "' ORDER BY id DESC LIMIT 4");
+                                        <?php while ($row = mysqli_fetch_array($payrollQuery)) {
                                         ?>
                                             <tr>
-                                                <td><strong><?php echo date("Y-m-d"); ?></strong></td>
-                                                <td><?php echo date("M d, Y"); ?> — <?php echo date("M d, Y"); ?></td>
-                                                <td>20 days</td>
-                                                <td>0 days</td>
-                                                <td>20 Hours</td>
+                                                <td><strong><?php echo $row['extension_number']; ?></strong></td>
+                                                <td><?php echo $row['firstname']; ?> <?php echo $row['lastname']; ?></td>
+                                                <td><?php echo $row['pay_run']; ?></td>
+                                                <td><?php echo date("F d, Y", strtotime($row['start_pay_period'])); ?> - <?php echo date("F d, Y", strtotime($row['end_pay_period'])); ?></td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                                             <i class="bx bx-dots-vertical-rounded"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="account-form.php?mode=edit&account_id=<?php echo $row['account_id']; ?>"><i class="bx bx-edit-alt me-1"></i> View</a>
+                                                            <a class="dropdown-item" href="view_payslip.php?id=<?php echo $row['payslip_id'] ?>"> View Payslip</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -104,26 +101,6 @@ $accountQuery = mysqli_query($db, "SELECT * FROM accounts");
     <!-- / Layout wrapper -->
 
     <?php include 'script-tags.php'; ?>
-
-    <script>
-        function deleteDeal(id) {
-            $.ajax({
-                url: "servers/account-server.php",
-                method: "POST",
-                data: {
-                    id,
-                    operation: "Delete"
-                },
-                success: function(data) {
-                    if (data === "Success") {
-                        window.location.replace("accounts.php");
-                    } else {
-                        swal("INVALID!", "Error", "error");
-                    }
-                }
-            })
-        }
-    </script>
 </body>
 
 </html>
