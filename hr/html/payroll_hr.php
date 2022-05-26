@@ -1,6 +1,6 @@
 <?php include 'db.php';
 session_start();
-$payrollQuery = mysqli_query($db, "SELECT * FROM payslip INNER JOIN employees ON payslip.employee_id = employees.employee_id");
+$payrollQuery = mysqli_query($db, "SELECT employees.*, payslip.pay_run, payslip.start_pay_period, payslip.end_pay_period, payslip.payslip_id, payslip.id FROM payslip INNER JOIN employees ON payslip.employee_id = employees.employee_id");
 $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
 
 ?>
@@ -60,7 +60,7 @@ $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
                                                 <td><strong><?php echo $row['extension_number']; ?></strong></td>
                                                 <td><?php echo $row['firstname']; ?> <?php echo $row['lastname']; ?></td>
                                                 <td><?php echo $row['pay_run']; ?></td>
-                                                <td><?php echo date("F d, Y", strtotime($row['start_pay_period'])); ?> - <?php echo date("F d, Y", strtotime($row['start_pay_period'])); ?></td>
+                                                <td><?php echo date("F d, Y", strtotime($row['start_pay_period'])); ?> - <?php echo date("F d, Y", strtotime($row['end_pay_period'])); ?></td>
                                                 <td><span class="badge bg-label-warning me-1">Unseen</span></td>
                                                 <td>
                                                     <div class="dropdown">
@@ -69,7 +69,7 @@ $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             <a class="dropdown-item" href="view_payslip.php?id=<?php echo $row['payslip_id'] ?>"> View Payslip</a>
-                                                            <a class="dropdown-item" href="view_payslip.php?id=<?php echo $row['payslip_id'] ?>"> Delete</a>
+                                                            <button class="dropdown-item" onclick="delete_payslip(<?php echo $row['id']; ?>)">Delete</button>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -84,7 +84,8 @@ $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
                     <!-- / Content -->
                     <?php include 'footer.php'; ?>
 
-                    <div class="content-backdrop fade"></div>
+                    <div class=" content-backdrop fade">
+                    </div>
                 </div>
                 <!-- Content wrapper -->
             </div>
@@ -114,6 +115,16 @@ $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
                                     <option value="<?php echo $row['employee_id']; ?>"><?php echo $row['firstname'] ?> <?php echo $row['lastname'] ?></option>
                                 <?php } ?>
                             </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="nameLarge" class="form-label">Start Pay Period</label>
+                            <input class="form-control" id="text_start" type="date" />
+                        </div>
+                        <div class="col mb-3">
+                            <label for="nameLarge" class="form-label">End Pay Period</label>
+                            <input class="form-control" id="text_end" type="date" />
                         </div>
                     </div>
                     <div class="employee-info-container">
@@ -238,12 +249,16 @@ $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
         function generate() {
             const operation = "Generate";
             let employee_id = $("#text_employee_id").val();
+            let start = $("#text_start").val();
+            let end = $("#text_end").val();
             $.ajax({
                 url: "servers/employee-server.php",
                 method: "POST",
                 data: {
                     employee_id,
-                    operation
+                    operation,
+                    start,
+                    end
                 },
                 success: function(data) {
                     if (data === "Success") {
@@ -255,6 +270,26 @@ $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
             })
 
         };
+
+
+        function delete_payslip(id) {
+            $.ajax({
+                url: "servers/payslip-server.php",
+                method: "POST",
+                data: {
+                    id,
+                    operation: "Delete"
+                },
+                success: function(data) {
+                    if (data === "Success") {
+                        alert("Payslip Deleted");
+                        window.location.reload();
+                    } else {
+                        swal("INVALID!", data, "error");
+                    }
+                }
+            })
+        }
     </script>
 </body>
 

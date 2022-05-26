@@ -1,6 +1,6 @@
 <?php include 'db.php';
 session_start();
-$attendanceQuery = mysqli_query($db, "SELECT employees.extension_number, attendance_requests.id, attendance_requests.date, attendance_requests.time_in, attendance_requests.time_out, attendance_requests.reason,  attendance_requests.reason, attendance_requests.status, employees.firstname, employees.lastname, employees.employee_id FROM attendance_requests INNER JOIN employees ON attendance_requests.employee_id = employees.employee_id WHERE employees.employee_id = '" . $_SESSION["employee_id"] . "'");
+$attendanceQuery = mysqli_query($db, "SELECT employees.extension_number, attendance_requests.id, attendance_requests.date, attendance_requests.time_in, attendance_requests.time_out, attendance_requests.reason,  attendance_requests.reason, attendance_requests.status, employees.firstname, employees.lastname, employees.employee_id FROM attendance_requests INNER JOIN employees ON attendance_requests.employee_id = employees.employee_id ");
 
 ?>
 <!DOCTYPE html>

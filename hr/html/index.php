@@ -15,9 +15,7 @@ $rowNav = mysqli_fetch_array($navQuery);
 // 3 Employee
 
 $employee_type = $rowNav['type_id'];
-if ($employee_type == 1) {
-  header("Location: index.php");
-}
+
 if ($employee_type == 2) {
   header("Location: attendance_hr.php");
 }

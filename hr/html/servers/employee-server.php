@@ -48,7 +48,7 @@ if (isset($_POST['operation'])) {
     if ($_POST['operation'] == 'Delete') {
         $id = $_POST['id'];
 
-        $deleteQuery = mysqli_query($db, "DELETE FROM employees WHERE id = '" . $id . "'");
+        $deleteQuery = mysqli_query($db, "DELETE FROM employees WHERE extension_number = '" . $id . "'");
 
         if ($deleteQuery) {
             echo "Success";
@@ -169,9 +169,11 @@ if (isset($_POST['operation'])) {
         $salary_per_hour = $row1["salary"];
         $net_pay = $row1["salary"] * $hours_per_day * $days;
         $pay_run = date("Y-m-d");
+        $start =  $_POST['start'];
+        $end =  $_POST['end'];
         $total_working_hours = 11;
 
-        $insertQuery = mysqli_query($db, "INSERT INTO payslip (employee_id, pay_run, start_pay_period, end_pay_period, payslip_id, extension_number, account_id, email, firstname, lastname, contact_number, sss, philhealth, tin, pag_ibig, employee_type, total_working_hours, salary_per_hour, netpay, deal_count) VALUES ('" . $employee_id . "', '" . $pay_run . "', '" . $pay_run . "', '" . $pay_run . "', '" . $randomNum . "', '" . $extension_number . "', '" . $account_id . "', '" . $email . "', '" . $firstname . "', '" . $lastname . "', '" . $contact_number . "', '" . $sss . "', '" . $philhealth . "', '" . $tin . "', '" . $pag_ibig . "', '" . $employee_type . "', '" . $total_working_hours . "', '" . $salary_per_hour . "', '" . $net_pay . "', '" . $countDeal . "')");
+        $insertQuery = mysqli_query($db, "INSERT INTO payslip (employee_id, pay_run, start_pay_period, end_pay_period, payslip_id, extension_number, account_id, email, firstname, lastname, contact_number, sss, philhealth, tin, pag_ibig, employee_type, total_working_hours, salary_per_hour, netpay, deal_count) VALUES ('" . $employee_id . "', '" . $pay_run . "', '" . $start . "', '" . $end . "', '" . $randomNum . "', '" . $extension_number . "', '" . $account_id . "', '" . $email . "', '" . $firstname . "', '" . $lastname . "', '" . $contact_number . "', '" . $sss . "', '" . $philhealth . "', '" . $tin . "', '" . $pag_ibig . "', '" . $employee_type . "', '" . $total_working_hours . "', '" . $salary_per_hour . "', '" . $net_pay . "', '" . $countDeal . "')");
 
         if ($insertQuery) {
             echo "Success";
