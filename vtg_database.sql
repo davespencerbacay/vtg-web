@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 12, 2022 at 01:57 AM
+-- Generation Time: May 29, 2022 at 11:43 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.4
 
@@ -66,7 +66,28 @@ CREATE TABLE `attendance` (
 --
 
 INSERT INTO `attendance` (`id`, `employee_id`, `date`, `time_in`, `time_out`) VALUES
-(9, 'KJFGLKJDG158', '2022-05-10', '06:00:00', '15:30:00');
+(19, 'dmi1rle2y5j', '2022-05-03', '04:57:44', '13:00:48'),
+(23, 'dmi1rle2y5j', '2022-05-02', '04:57:44', '13:00:48'),
+(24, 'dmi1rle2y5j', '2022-05-04', '04:57:44', '13:00:48'),
+(25, 'dmi1rle2y5j', '2022-05-05', '04:57:44', '13:00:48'),
+(26, 'dmi1rle2y5j', '2022-05-06', '04:57:44', '13:00:48'),
+(27, 'dmi1rle2y5j', '2022-05-09', '04:57:44', '13:00:48'),
+(28, 'dmi1rle2y5j', '2022-05-10', '04:57:44', '13:00:48'),
+(29, 'dmi1rle2y5j', '2022-05-11', '04:57:44', '13:00:48'),
+(30, 'dmi1rle2y5j', '2022-05-13', '04:57:44', '13:00:48'),
+(31, 'dmi1rle2y5j', '2022-05-16', '04:57:44', '13:00:48'),
+(32, 'dmi1rle2y5j', '2022-05-17', '04:57:44', '13:00:48'),
+(33, 'dmi1rle2y5j', '2022-05-18', '04:57:44', '13:00:48'),
+(34, 'dmi1rle2y5j', '2022-05-19', '04:57:44', '13:00:48'),
+(35, 'dmi1rle2y5j', '2022-05-20', '04:57:44', '13:00:48'),
+(36, 'dmi1rle2y5j', '2022-05-23', '04:57:44', '13:00:48'),
+(37, 'dmi1rle2y5j', '2022-05-24', '04:57:44', '13:00:48'),
+(38, 'dmi1rle2y5j', '2022-05-25', '04:57:44', '13:00:48'),
+(39, 'dmi1rle2y5j', '2022-05-26', '04:57:44', '13:00:48'),
+(40, 'dmi1rle2y5j', '2022-05-27', '04:57:44', '13:00:48'),
+(41, 'dmi1rle2y5j', '2022-05-30', '04:57:44', '13:00:48'),
+(42, 'dmi1rle2y5j', '2022-05-31', '04:57:44', '13:00:48'),
+(43, '', '0000-00-00', '00:00:00', '00:00:00');
 
 -- --------------------------------------------------------
 
@@ -89,7 +110,9 @@ CREATE TABLE `attendance_requests` (
 --
 
 INSERT INTO `attendance_requests` (`id`, `employee_id`, `date`, `time_in`, `time_out`, `reason`, `status`) VALUES
-(16, 'KJFGLKJDG158', '2022-05-10', '06:00:00', '15:30:00', 'test', 2);
+(16, 'KJFGLKJDG158', '2022-05-10', '06:00:00', '15:30:00', 'test', 1),
+(17, 'dmi1rle2y5j', '2022-05-12', '11:03:00', '17:00:00', 'late', 1),
+(18, 'dmi1rle2y5j', '2022-05-12', '11:57:00', '23:58:00', 'laters', 0);
 
 -- --------------------------------------------------------
 
@@ -118,7 +141,12 @@ INSERT INTO `deals` (`id`, `deal_id`, `date`, `account_id`, `employee_id`, `rema
 (18, 'penvj72d0t3', '2022-04-16', 'c2gn38bzpx4', '52qcfrsgyj3', 'qweqweqwe', 1),
 (19, '0iyehazqxk3', '2022-04-16', 'c2gn38bzpx4', '52qcfrsgyj3', 'shet nakapag deal pero di legit\n', 1),
 (20, 'z4ckbqt6hm2', '2022-04-16', 'c2gn38bzpx4', '52qcfrsgyj3', 'eto legit na talaga', 1),
-(21, 'wg2xcjhepr6', '2022-04-16', 'ASDHJKFGFG', '52qcfrsgyj3', 'Test BBROSE my love', 1);
+(21, 'wg2xcjhepr6', '2022-04-16', 'ASDHJKFGFG', '52qcfrsgyj3', 'Test BBROSE my love', 1),
+(22, '5pk6tohr9sa', '2022-05-12', 'DFHLKDFH', 'dmi1rle2y5j', 'YES ', 1),
+(23, '83nb5tdjc7e', '2022-05-12', 'c2gn38bzpx4', 'mgkf16ywav7', 'Active', 1),
+(24, '01f4rp8xsah', '2022-05-12', 'DFHLKDFH', 'dmi1rle2y5j', 'yesyes', 1),
+(25, 'ei8pd1w956c', '2022-05-12', 'c2gn38bzpx4', '7whcdq3ryak', '', 0),
+(26, 'nq3lbf2ovy1', '2022-05-12', 'c2gn38bzpx4', '7whcdq3ryak', 'asa', 0);
 
 -- --------------------------------------------------------
 
@@ -156,12 +184,33 @@ CREATE TABLE `employees` (
 
 INSERT INTO `employees` (`id`, `employee_id`, `type_id`, `salary_id`, `firstname`, `middlename`, `lastname`, `email`, `contact_number`, `extension_number`, `date_added`, `password`, `avatar`, `team_leader`, `account_id`, `sss`, `philhealth`, `tin`, `pag_ibig`, `employee_type`, `salary`) VALUES
 (1, 'KJFGLKJDG158', '1', 'FDOIAD', 'Mark Louie', 'Arancon', 'Luna', 'mark@gmail.com', '091235675687', '1001', '2022-04-16', '123123', '1.png', 1, 'ASDHJKFGFG', '54548-3211f-2321', '54548-3211f-2321PH', '54548-3211f-2321TIN', '54548-3211f-2321PI', 1, 90),
-(2, 'GUOSS8123', '3', 'FDOIAD', 'Baby Rosse', 'Baylon', 'Baylon', 'mybaby@gmail.com', '091235675687', '1002', '2022-04-16', '123123', '1.png', 0, 'ASDHJKFGFG', '54548-3211f-2321', '54548-3211f-2321PH', '54548-3211f-2321TIN', '54548-3211f-2321PI', 0, 90),
 (4, 'A65S4D56A41G', '2', 'FDOIAD', 'Luffy', 'Test', 'HR', 'hr@gmail.com', '091235675687', '1004', '2022-04-16', '123123', '1.png', 0, 'ASDHJKFGFG', '54548-3211f-2321', '54548-3211f-2321PH', '54548-3211f-2321TIN', '54548-3211f-2321PI', 0, 90),
 (5, '45GERLKIHE', '2', 'FDOIAD', 'Noel', 'E', 'Lanic', 'noel@gmail.com', '091235675687', '1004', '2022-04-16', '123123', '1.png', 0, 'DFHLKDFH', '54548-3211f-2321', '54548-3211f-2321PH', '54548-3211f-2321TIN', '54548-3211f-2321PI', 0, 90),
-(6, 'FGGKJKJHDS', '3', 'FDOIAD', 'Carmela', 'E', 'Garcia', 'carmela@gmail.com', '091235675687', '1005', '2022-04-16', '123123', '1.png', 0, 'DFHLKDFH', '54548-3211f-2321', '54548-3211f-2321PH', '54548-3211f-2321TIN', '54548-3211f-2321PI', 0, 90),
 (7, '52qcfrsgyj3', '3', 'FDOIAD', 'Employee', '', 'Name', 'employee@gmail.com', '+639063276417', '12222', '0000-00-00', '123123', '1.png', 0, 'DFHLKDFH', '54548-3211f-2321', '54548-3211f-2321PH', '54548-3211f-2321TIN', '54548-3211f-2321PI', 0, 90),
 (8, 'dmi1rle2y5j', '3', 'FDOIAD', 'Dummy', '', 'Employee', 'dummy@gmail.com', '+639063276417', '123', '0000-00-00', '123123', '1.png', 0, 'DFHLKDFH', '54548-3211f-2321', '54548-3211f-2321PH', '54548-3211f-2321TIN', '54548-3211f-2321PI', 0, 90);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employer_contribution`
+--
+
+CREATE TABLE `employer_contribution` (
+  `id` int(200) NOT NULL,
+  `sss` int(200) NOT NULL,
+  `philhealth` int(200) NOT NULL,
+  `hdmf` int(200) NOT NULL,
+  `e_sss` int(11) NOT NULL,
+  `e_ph` int(11) NOT NULL,
+  `e_hdmf` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `employer_contribution`
+--
+
+INSERT INTO `employer_contribution` (`id`, `sss`, `philhealth`, `hdmf`, `e_sss`, `e_ph`, `e_hdmf`) VALUES
+(1, 581, 100, 100, 581, 438, 100);
 
 -- --------------------------------------------------------
 
@@ -199,9 +248,7 @@ CREATE TABLE `payslip` (
 --
 
 INSERT INTO `payslip` (`id`, `employee_id`, `pay_run`, `start_pay_period`, `end_pay_period`, `status`, `payslip_id`, `extension_number`, `account_id`, `email`, `firstname`, `lastname`, `contact_number`, `sss`, `philhealth`, `tin`, `pag_ibig`, `employee_type`, `total_working_hours`, `salary_per_hour`, `netpay`, `deal_count`) VALUES
-(1, 'KJFGLKJDG158', '2022-05-15', '2022-04-30', '2022-05-15', 0, 'GDJKGSD454312FD', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
-(3, '52qcfrsgyj3', '2022-05-12', '2022-05-12', '2022-05-12', 0, '5cxg1fth9so', '12222', 'DFHLKDFH', 'employee@gmail.com', 'Employee', 'Name', '+639063276417', '54548-3211f-2321', '54548-3211f-2321PH', '54548-3211f-2321TIN', '54548-3211f-2321PI', '0', '11', '90', '7200', '7'),
-(4, 'FGGKJKJHDS', '2022-05-12', '2022-05-12', '2022-05-12', 0, 'bg2yvldqrxw', '1005', 'DFHLKDFH', 'carmela@gmail.com', 'Carmela', 'Garcia', '091235675687', '54548-3211f-2321', '54548-3211f-2321PH', '54548-3211f-2321TIN', '54548-3211f-2321PI', '0', '11', '90', '7200', '0');
+(13, 'dmi1rle2y5j', '2022-05-30', '2022-05-02', '2022-05-15', 0, '8ahcgpe7q49', '123', 'DFHLKDFH', 'dummy@gmail.com', 'Dummy', 'Employee', '+639063276417', '54548-3211f-2321', '54548-3211f-2321PH', '54548-3211f-2321TIN', '54548-3211f-2321PI', '0', '11', '90', '7200', '2');
 
 -- --------------------------------------------------------
 
@@ -251,6 +298,12 @@ ALTER TABLE `employees`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `employer_contribution`
+--
+ALTER TABLE `employer_contribution`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `payslip`
 --
 ALTER TABLE `payslip`
@@ -276,31 +329,37 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `attendance_requests`
 --
 ALTER TABLE `attendance_requests`
-  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `deals`
 --
 ALTER TABLE `deals`
-  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `employer_contribution`
+--
+ALTER TABLE `employer_contribution`
+  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `payslip`
 --
 ALTER TABLE `payslip`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `type_employees`
