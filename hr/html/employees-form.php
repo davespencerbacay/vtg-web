@@ -105,6 +105,32 @@ if (isset($_GET['mode'])) {
                                         <?php } ?>
                                     </select>
                                 </div>
+                                <div class="mb-2">
+                                    <label for="text_name" class="form-label">Type of Employee</label>
+                                    <select class="form-control" id="text_employee_type">
+                                        <?php if ($row['salary'] == 90) { ?>
+                                            <option value="90">Officer in Charge</option>
+                                            <option value="62.5">Newbie Employee</option>
+                                            <option value="78">Rookie Employee</option>
+                                            <option value="82">Tenured Employee</option>
+                                        <?php } elseif ($row['salary'] == 78) { ?>
+                                            <option value="78">Rookie Employee</option>
+                                            <option value="62.5">Newbie Employee</option>
+                                            <option value="82">Tenured Employee</option>
+                                            <option value="90">Officer in Charge</option>
+                                        <?php } elseif ($row['salary'] == 82) { ?>
+                                            <option value="82">Tenured Employee</option>
+                                            <option value="62.5">Newbie Employee</option>
+                                            <option value="78">Rookie Employee</option>
+                                            <option value="90">Officer in Charge</option>
+                                        <?php } else { ?>
+                                            <option value="62.5">Newbie Employee</option>
+                                            <option value="78">Rookie Employee</option>
+                                            <option value="82">Tenured Employee</option>
+                                            <option value="90">Officer in Charge</option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
                                 <input type="hidden" id="text_employeeid" value="<?php echo $employee_id; ?>" />
                                 <?php
                                 if ($_GET['mode'] === "edit") {
@@ -145,6 +171,7 @@ if (isset($_GET['mode'])) {
             var password = $("#text_password").val();
             var operation = "Add";
             var account_id = $("#text_accountid").val();
+            var employee_type = $("#text_employee_type").val();
 
             $.ajax({
                 url: "servers/employee-server.php",
@@ -158,6 +185,7 @@ if (isset($_GET['mode'])) {
                     password,
                     operation,
                     account_id: account_id,
+                    salary: employee_type
                 },
                 success: function(data) {
                     if (data === "Success") {
@@ -179,6 +207,7 @@ if (isset($_GET['mode'])) {
             var operation = "Edit";
             var account_id = $("#text_accountid").val();
             var employee_id = $("#text_employeeid").val();
+            var employee_type = $("#text_employee_type").val();
 
             $.ajax({
                 url: "servers/employee-server.php",
@@ -193,6 +222,7 @@ if (isset($_GET['mode'])) {
                     employee_id,
                     operation,
                     account_id: account_id,
+                    salary: employee_type
                 },
                 success: function(data) {
                     if (data === "Success") {

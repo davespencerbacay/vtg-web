@@ -184,17 +184,13 @@ $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
                                 <p id="text-employee-type">-- -- --</p>
                             </div>
                             <div class="col mb-3">
-                                <label for="nameLarge" class="form-label">Total Working Hours</label>
-                                <p id="text-hours">--</p>
-                            </div>
-                            <div class="col mb-3">
                                 <label for="nameLarge" class="form-label">Salary Per Hour</label>
                                 <p>₱<span id="text-basic-pay">-- --</span></p>
                             </div>
-                            <div class="col mb-3">
+                            <!-- <div class="col mb-3">
                                 <label for="nameLarge" class="form-label">Net Pay <br /> (Salary per hour x 8H x 10D + deal)</label>
                                 <p><b>₱<span id="text-net-pay">-- --</span></b></p>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -237,8 +233,8 @@ $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
                     $('#text-employee-type').text(data.employee_type);
                     $('#text-account').text(data.account_name);
                     $('#text-basic-pay').text(data.basic_pay);
-                    $('#text-net-pay').text(data.net_pay + " + " +
-                        "₱" + data.dealEarned + " = " + "₱" + parseInt(data.dealEarned + data.net_pay));
+                    // $('#text-net-pay').text(data.net_pay + " + " +
+                    //     "₱" + data.dealEarned + " = " + "₱" + parseInt(data.dealEarned + data.net_pay));
                     $('#text-deal').text(data.deal);
                     $("#text_employee_id").val(employeeId)
                 }

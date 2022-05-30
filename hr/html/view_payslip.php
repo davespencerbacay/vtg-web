@@ -4,10 +4,14 @@ $payrollQuery = mysqli_query($db, "SELECT * FROM payslip WHERE payslip_id = '" .
 $payslipRow = mysqli_fetch_array($payrollQuery);
 $employees = mysqli_query($db, "SELECT * FROM employees WHERE type_id = '3'");
 
-if ($payslipRow['employee_type'] == "1") {
-    $employee_type1 = "Regular Employee";
+if ($payslipRow['salary_per_hour'] == "62.5") {
+    $employee_type1 = "Newbie Employee";
+} elseif ($payslipRow['salary_per_hour'] == "78") {
+    $employee_type1 = "Rookie Employee";
+} elseif ($payslipRow['salary_per_hour'] == "82") {
+    $employee_type1 = "Tenured Employee";
 } else {
-    $employee_type1 = "Probitionary Employee";
+    $employee_type1 = "Officer In Charge";
 }
 
 $accountQuery = mysqli_query($db, "SELECT * FROM accounts WHERE account_id = '" . $payslipRow['account_id'] . "'");
@@ -18,7 +22,9 @@ $deal = mysqli_query($db, "SELECT * FROM deals WHERE employee_id = '" . $payslip
 $countDeal = mysqli_num_rows($deal);
 
 if ($countDeal == 0) {
-    $totalDeal = 1400;
+    $totalDeal = 0;
+} elseif ($countDeal >= 14) {
+    $totalDeal = 1500;
 } else {
     $totalDeal = $countDeal * 40;
 }
@@ -27,6 +33,14 @@ if ($countDeal == 0) {
 $deductions = mysqli_query($db, "SELECT * FROM employer_contribution");
 $drow = mysqli_fetch_array($deductions);
 $deductions1 = $drow['e_sss'] + $drow['e_ph'] + $drow['e_hdmf'];
+
+$daysAttended = mysqli_query($db, "SELECT * FROM `attendance` WHERE date BETWEEN '" . $payslipRow['start_pay_period'] . "' AND  '" . $payslipRow['end_pay_period'] . "' AND employee_id = '" . $payslipRow['employee_id'] . "' ORDER BY `attendance`.`date` DESC");
+
+$selectCountHoursPayed = mysqli_query($db, "SELECT SUM(TIMESTAMPDIFF(HOUR, time_in, time_out)) 
+                                            as `SUM_HOURS`  FROM `attendance` WHERE date BETWEEN '" . $payslipRow['start_pay_period'] . "' AND  '" . $payslipRow['end_pay_period'] . "' AND employee_id = '" . $payslipRow['employee_id'] . "' ORDER BY `attendance`.`date` DESC");
+$rowCountHours = mysqli_fetch_array($selectCountHoursPayed);
+$hours_per_day = $rowCountHours['SUM_HOURS'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
@@ -87,8 +101,12 @@ $deductions1 = $drow['e_sss'] + $drow['e_ph'] + $drow['e_hdmf'];
                                         </div>
                                         <div class="details">
                                             <div class="entry">
+                                                <div class="label">Extension ID</div>
+                                                <div class="value"><?php echo $payslipRow['extension_number']; ?></div>
+                                            </div>
+                                            <div class="entry">
                                                 <div class="label">Employee ID</div>
-                                                <div class="value"><?php echo $payslipRow['employee_id']; ?></div>
+                                                <div class="value"><?php echo strtoupper($payslipRow['employee_id']); ?></div>
                                             </div>
                                             <div class="entry">
                                                 <div class="label">Employee ID</div>
@@ -181,6 +199,31 @@ $deductions1 = $drow['e_sss'] + $drow['e_ph'] + $drow['e_hdmf'];
                                             <div class="taxable_commission"></div>
                                             <div class="contributions">
                                                 <div class="entry">
+                                                    <div class="label">Attendance</div>
+                                                    <div class="detail"></div>
+                                                    <div class="rate"></div>
+                                                    <div class="amount"></div>
+                                                </div>
+                                                <?php while ($row11 = mysqli_fetch_array($daysAttended)) {
+                                                    if ($row11['time_out'] == "00:00:00") {
+                                                        $time_out = "-- : -- : --";
+                                                        $hours = 0;
+                                                    } else {
+                                                        $time_out = $row11['time_out'];
+                                                        $total      = strtotime($row11['time_out']) - strtotime($row11['time_in']);
+                                                        $hours      = floor($total / 60 / 60);
+                                                    }
+                                                ?>
+                                                    <div class="entry">
+                                                        <div class="label"></div>
+                                                        <div class="detail"><?php echo $row11['date'] ?> &nbsp; <?php echo $hours ?> hrs</div>
+                                                        <div class="rate"></div>
+                                                        <div class="amount"></div>
+                                                    </div>
+                                                <?php } ?>
+                                            </div>
+                                            <div class="contributions">
+                                                <div class="entry">
                                                     <div class="label">Contributions</div>
                                                     <div class="detail"></div>
                                                     <div class="rate"></div>
@@ -220,7 +263,7 @@ $deductions1 = $drow['e_sss'] + $drow['e_ph'] + $drow['e_hdmf'];
                                                     <div class="label">NET PAY</div>
                                                     <div class="detail"></div>
                                                     <div class="rate"></div>
-                                                    <div class="amount">₱<?php echo $payslipRow["salary_per_hour"] * 8 * 20 / 2 - $deductions1; ?>/Month</div>
+                                                    <div class="amount">₱<?php echo $payslipRow["salary_per_hour"] * $hours_per_day - $deductions1; ?></div>
                                                 </div>
                                             </div>
                                         </div>

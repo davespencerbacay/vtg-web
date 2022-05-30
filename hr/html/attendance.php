@@ -4,12 +4,11 @@ error_reporting(0);
 $attendanceQuery = mysqli_query($db, "SELECT * FROM attendance INNER JOIN employees ON attendance.employee_id = employees.employee_id WHERE employees.employee_id = '" . $_SESSION["employee_id"] . "'");
 
 $dateToday = date("Y-m-d");
-$attendanceToday = mysqli_query($db, "SELECT * FROM attendance WHERE date = '" . $dateToday . "' ");
+$attendanceToday = mysqli_query($db, "SELECT * FROM attendance WHERE date = '" . $dateToday . "' AND employee_id = '" . $_SESSION['employee_id'] . "'");
 $attendanceRow = mysqli_fetch_array($attendanceToday);
 $attendanceDate = isset($attendanceRow['date']) ? $attendanceRow['date'] : "";
 $countRow = mysqli_num_rows($attendanceToday);
 $dateToday = date("Y-m-d");
-$timeInIsDisabled;
 
 if ($countRow >= 1 && $attendanceDate == $dateToday) {
     $timeInIsDisabled = "disabled";
@@ -180,7 +179,7 @@ if ($attendanceRow['time_out'] != "00:00:00") {
                     operation
                 },
                 success: function(data) {
-                    if (data === "Success") {
+                    if (data == "Success") {
                         alert("Request Submitted");
                         window.location.replace("attendance.php");
                     } else {
