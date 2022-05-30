@@ -22,9 +22,10 @@ if (isset($_POST['operation'])) {
         $password = $_POST['password'];
         $account_id = $_POST['account_id'];
         $contact_number = $_POST['contact_number'];
+        $salary = $_POST['salary'];
         $randomNum = substr(str_shuffle("0123456789abcdefghijklmnopqrstvwxyz"), 0, 11);
 
-        $addQuery = mysqli_query($db, "INSERT INTO employees (firstname, lastname, email, extension_number, password, account_id, employee_id, contact_number) VALUES ('" . $firstname . "', '" . $lastname . "', '" . $email . "', '" . $extension_number . "', '" . $password . "', '" . $account_id . "', '" . $randomNum . "', '" . $contact_number . "')");
+        $addQuery = mysqli_query($db, "INSERT INTO employees (firstname, lastname, email, extension_number, password, account_id, employee_id, contact_number, type_id, avatar, salary) VALUES ('" . $firstname . "', '" . $lastname . "', '" . $email . "', '" . $extension_number . "', '" . $password . "', '" . $account_id . "', '" . $randomNum . "', '" . $contact_number . "', '3', '1.png', '" . $salary . "')");
 
         if ($addQuery) {
             echo "Success";
@@ -37,8 +38,9 @@ if (isset($_POST['operation'])) {
         $extension_number = $_POST['extension_number'];
         $password = $_POST['password'];
         $account_id = $_POST['account_id'];
+        $salary = $_POST['salary'];
 
-        $editQuery = mysqli_query($db, "UPDATE employees SET firstname = '" . $firstname . "', lastname = '" . $lastname . "', email = '" . $email . "', extension_number = '" . $extension_number . "', password = '" . $password . "', account_id = '" . $account_id . "' WHERE employee_id = '" . $_POST['employee_id'] . "'");
+        $editQuery = mysqli_query($db, "UPDATE employees SET firstname = '" . $firstname . "', lastname = '" . $lastname . "', email = '" . $email . "', extension_number = '" . $extension_number . "', password = '" . $password . "', account_id = '" . $account_id . "', salary = '" . $salary . "' WHERE employee_id = '" . $_POST['employee_id'] . "'");
 
         if ($editQuery) {
             echo "Success";
@@ -69,8 +71,6 @@ if (isset($_POST['operation'])) {
 
         $dealQuery = mysqli_query($db, "SELECT * FROM deals WHERE employee_id = '" . $row1['employee_id'] . "' and status = 1");
         $countDeal = mysqli_num_rows($dealQuery);
-
-
 
         while ($row = mysqli_fetch_array($fetchQuery)) {
             //Newbie = 62.5
@@ -103,12 +103,20 @@ if (isset($_POST['operation'])) {
             // 14,400 Monthly
 
             $days = 10;
-            $hours_per_day = 8;
 
-            if ($row['employee_type'] == "1") {
-                $output["employee_type"] = "Regular Employee";
+            $selectCountHoursPayed = mysqli_query($db, "SELECT SUM(TIMESTAMPDIFF(HOUR, time_in, time_out)) 
+                    as `SUM_HOURS`  FROM `attendance` WHERE date BETWEEN '2022-05-16' AND  '2022-05-31' AND employee_id = 'dmi1rle2y5j' ORDER BY `attendance`.`date` DESC");
+            $rowCountHours = mysqli_fetch_array($selectCountHoursPayed);
+            $hours_per_day = $rowCountHours['SUM_HOURS'];
+
+            if ($row['salary'] == "62.5") {
+                $output["employee_type"] = "Newbie Employee";
+            } elseif ($row['salary'] == "78") {
+                $output["employee_type"] = "Rookie Employee";
+            } elseif ($row['salary'] == "82") {
+                $output["employee_type"] = "Tenured Employee";
             } else {
-                $output["employee_type"] = "Probitionary Employee";
+                $output["employee_type"] = "Officer In Charge";
             }
 
             if ($countDeal >= 14) {
@@ -130,6 +138,7 @@ if (isset($_POST['operation'])) {
             $output["account_name"] = $account_name;
             $output["deal"] = $countDeal;
             $output["dealEarned"] = $dealEarned;
+            $output["totalHours"] = $hours_per_day;
         }
         echo json_encode($output);
     }
@@ -148,8 +157,15 @@ if (isset($_POST['operation'])) {
 
         $dealQuery = mysqli_query($db, "SELECT * FROM deals WHERE employee_id = '" . $row1['employee_id'] . "' and status = 1");
         $countDeal = mysqli_num_rows($dealQuery);
-        $days = 10;
-        $hours_per_day = 8;
+
+        $selectCountHoursPayed = mysqli_query($db, "SELECT SUM(TIMESTAMPDIFF(HOUR, time_in, time_out)) 
+                                                    as `SUM_HOURS`  FROM `attendance` WHERE date BETWEEN '" . $_POST['start'] . "' AND  '" . $_POST['end'] . "' AND employee_id = '" . $employee_id . "' ORDER BY `attendance`.`date` DESC");
+        $rowCountHours = mysqli_fetch_array($selectCountHoursPayed);
+        $hours_per_day = $rowCountHours['SUM_HOURS'];
+
+        $selectDaysPayed = mysqli_query($db, "SELECT TIMESTAMPDIFF(HOUR, time_in, time_out) 
+                                                    as `SUM_HOURS`  FROM `attendance` WHERE date BETWEEN '" . $_POST['start'] . "' AND  '" . $_POST['end'] . "' AND employee_id = '" . $employee_id . "' ORDER BY `attendance`.`date` DESC");
+        $days = mysqli_num_rows($selectDaysPayed);
 
         if ($countDeal >= 14) {
             $dealEarned = 1500;
@@ -171,7 +187,7 @@ if (isset($_POST['operation'])) {
         $pay_run = date("Y-m-d");
         $start =  $_POST['start'];
         $end =  $_POST['end'];
-        $total_working_hours = 11;
+        $total_working_hours = $hours_per_day;
 
         $insertQuery = mysqli_query($db, "INSERT INTO payslip (employee_id, pay_run, start_pay_period, end_pay_period, payslip_id, extension_number, account_id, email, firstname, lastname, contact_number, sss, philhealth, tin, pag_ibig, employee_type, total_working_hours, salary_per_hour, netpay, deal_count) VALUES ('" . $employee_id . "', '" . $pay_run . "', '" . $start . "', '" . $end . "', '" . $randomNum . "', '" . $extension_number . "', '" . $account_id . "', '" . $email . "', '" . $firstname . "', '" . $lastname . "', '" . $contact_number . "', '" . $sss . "', '" . $philhealth . "', '" . $tin . "', '" . $pag_ibig . "', '" . $employee_type . "', '" . $total_working_hours . "', '" . $salary_per_hour . "', '" . $net_pay . "', '" . $countDeal . "')");
 
